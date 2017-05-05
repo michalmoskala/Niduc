@@ -19,7 +19,6 @@ public class ImageTest
 	    	String s;
 	    	char c;
 	    	int i;
-	    	int count=0;
 	        byte[] imageInByte; 
 	        String imageInString = " ";
 	        String imageFromString = " ";
