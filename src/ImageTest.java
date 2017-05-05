@@ -25,7 +25,7 @@ public class ImageTest
 	        String temp;
 	        int binary;
 	        
-	        BufferedImage originalImage = ImageIO.read(new File("c:/NIE/source.jpg"));
+	        BufferedImage originalImage = ImageIO.read(new File("source.jpg"));
 
 	        // convert BufferedImage to byte array
 	        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -78,7 +78,7 @@ public class ImageTest
 	        	
 	        }
 	        
-	        try(  PrintWriter out = new PrintWriter( "c:/NIE/filename.txt" )  )
+	        try(  PrintWriter out = new PrintWriter( "filename.txt" )  )
 	        {
 	            out.println(imageInString);
 	        }	        	        
@@ -89,8 +89,7 @@ public class ImageTest
 	        InputStream in = new ByteArrayInputStream(imageFromByte);
 	        BufferedImage bImageFromConvert = ImageIO.read(in);
 
-	        ImageIO.write(bImageFromConvert, "jpg", new File(
-	                "c:/NIE/output.jpg"));
+	        ImageIO.write(bImageFromConvert, "jpg", new File("output.jpg"));
 	        System.out.println("Gotowe");
 
 	    } catch (IOException e) 
