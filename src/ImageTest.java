@@ -17,12 +17,18 @@ public class ImageTest
 	public static void main(String[] args) {
 
 	    try {
-	    	final double jakosc_kanalu=1.5;//im mniej tym lepszy kanał - od 1.2 do 2; poniżej 1.4 może być boguś
+	    	final double jakosc_kanalu=1.54;//im mniej tym lepszy kanał - od 1.2 do 2; poniżej 1.4 może być boguś+
+	    	/*
+	    	 *  IDEALNY 1.6
+	    	 *  SREDNI 1.54 
+	    	 *  Zly 1.49
+	    	 *  
+	    	 */
 	    	final int ramka=8;
-	    	final int errorallowance=10;
+	    	final int errorallowance=5;//20,10,5
 	    	
-	    	int warunek,i,q,a,b,ber=0,ber2=0;
-	    	double d,val;
+	    	int warunek,r,i,q,a,b,ber=0,ber2=0,ber3=0;
+	    	double d,val,b1,b2;
 	    	String s;
 	    	char c = 0,c2=0;
 	        byte[] imageInByte; 
@@ -100,7 +106,28 @@ public class ImageTest
 	        	
 	        }
 	        
-	       
+	        //przesylanie parity
+	        for (int n=0;n<parity.length();n++)
+	        {
+	        	Random random=new Random();
+	        	d=random.nextDouble();
+	        	if (d>0.99999)
+	        	{
+	        	ber3++;
+	        	parity=parity.substring(0,n);
+	        	
+	        	if (c==1)
+	        	parity=parity.concat("0");
+	        	else
+	        	parity=parity.concat("1");
+	        	
+	        	parity=parity.concat(parity.substring(n+1, parity.length()));
+	        	}      	
+	        	
+	        }
+	       System.out.println(ber3);
+	        
+	        
 	        for (int n=1;n<imageInString.length();n++)
 	        {
 	        	System.out.println(n + "/" + imageInString.length());
@@ -291,6 +318,10 @@ public class ImageTest
 	        	if (c!=c2) ber++;
 	        }
 	        
+	        b1=ber;
+	        b1=b1/imageInString.length();
+	        b1=b1*100;
+	        
 	        for(int n=0;n<imageInString.length();n++)
 	        {
 	        	System.out.println(n + "/" + (imageInString.length()-1));
@@ -299,6 +330,10 @@ public class ImageTest
 	        	
 	        	if (c!=c2) ber2++;
 	        }
+	        
+	        b2=ber2;
+	        b2=b2/imageInString.length();
+	        b2=b2*100;
 	        
 	        try(  PrintWriter out = new PrintWriter( "FROMSTR.txt" )  )
 	        {
@@ -312,6 +347,7 @@ public class ImageTest
 	        }	        	        
 	        byteArrayOutputStream.close();
 	        
+	        System.out.println("ARQ" + b1 + "% \nBEZ ARQ" + b2 + "%");
 	        
 	        InputStream in = new ByteArrayInputStream(imageFromByte2);
 	        BufferedImage bImageFromConvert = ImageIO.read(in);
@@ -319,20 +355,19 @@ public class ImageTest
 	        ImageIO.write(bImageFromConvert, "jpg", new File("output.jpg"));
 	        }
         	catch (IllegalArgumentException e) {
-        		    System.err.println("XD");
+        		    System.err.println("Popraw kanał");
         	}
 	        in=new ByteArrayInputStream(imageFromByte);
 	        bImageFromConvert=ImageIO.read(in);
 	        ImageIO.write(bImageFromConvert, "jpg", new File("outputARQ.jpg"));
 	        
 	        System.out.println("Gotowe");
-	        System.out.println(ber + " " + ber2);
 
 
 	    } catch (IOException e) 
 	    {
 	        System.out.println(e.getMessage());
-	        System.out.println("XD");
+	        System.out.println("Popraw kanał");
 	    }
 	}
 }
