@@ -578,7 +578,6 @@ public class arqFrame {
 
                     try {
                        
-                    	int qwe;
                         String combo = (String) comboBoxChannel.getSelectedItem();
                         double dcombo = 0;
                         if (combo=="Dobry") dcombo=1.6;
