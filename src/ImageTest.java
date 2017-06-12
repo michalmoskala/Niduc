@@ -1,8 +1,19 @@
-import java.awt.BorderLayout;
+import java.awt.EventQueue;
+import java.awt.Image;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JMenu;
+
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
+import java.awt.Font;
+import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -11,185 +22,593 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.io.Serializable;
 import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-import javax.swing.JPanel;
+import java.awt.event.ActionEvent;
+import javax.swing.JTextField;
 import javax.swing.JProgressBar;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
-public class ImageTest extends JFrame implements Serializable, ActionListener {
+public class arqFrame {
+
+	private JFrame frameNiducArq;
+	private JTextField textField;
+	private JTextField textFieldARQ;
+
 	/**
-	 * <b>serialVersionUID</b> Serial Version ID
+	 * Launch the application.
 	 */
-	private static final long serialVersionUID = 1L;
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					arqFrame window = new arqFrame();
+					window.frameNiducArq.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 
-	JFrame cards;
-	private JMenuBar menuBar;
-	private JMenu help, _authors, _ARQ_Algorithms;
-	private JMenuItem helpItem, _ARQ_ParityBits, _ARQ_MultiMethod, _ARQ_OwnAlgorithm;
+	/**
+	 * Create the application.
+	 */
+	public arqFrame() {
+		initialize();
+	}
 
-	private JMenuItem[] items = { new JMenuItem("Anna Trębicka"), new JMenuItem("Michał Moskała"),
-			new JMenuItem("Paweł Szynal"),
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
 
-	};
+		frameNiducArq = new JFrame();
+		frameNiducArq.setTitle("NIDUC2 ARQ    1.0");
+		frameNiducArq.setBounds(100, 100, 1079, 627);
+		frameNiducArq.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frameNiducArq.getContentPane().setLayout(null);
 
-	private JPanel panel;
-	static JProgressBar progressBar;
+		JLabel labelTitle = new JLabel("");
+		Image imgARQ = new ImageIcon(this.getClass().getResource("/ARQ.jpg")).getImage();
+		labelTitle.setIcon(new ImageIcon(imgARQ));
+		labelTitle.setBounds(25, 11, 274, 94);
+		frameNiducArq.getContentPane().add(labelTitle);
 
-	private final JComboBox<String> selection = new JComboBox<String>();
-	private final JComboBox<String> channel = new JComboBox<String>();
-	private final JComboBox<Integer> frame = new JComboBox<Integer>();
-	private final JComboBox<Integer> howmanyerrors = new JComboBox<Integer>();
+		JComboBox<String> comboBoxSelection = new JComboBox<String>();
+		comboBoxSelection.setBounds(315, 62, 129, 31);
+		frameNiducArq.getContentPane().add(comboBoxSelection);
 
-	JButton button = new JButton("START");
-	JLabel label, label1, label2, label3;
+		JComboBox<String> comboBoxChannel = new JComboBox<String>();
+		comboBoxChannel.setBounds(478, 62, 129, 31);
+		frameNiducArq.getContentPane().add(comboBoxChannel);
 
-	public ImageTest() {
+		JComboBox<Integer> comboBoxHowManyErrors = new JComboBox<Integer>();
+		comboBoxHowManyErrors.setBounds(644, 62, 183, 31);
+		frameNiducArq.getContentPane().add(comboBoxHowManyErrors);
 
-		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(1000, 700));
+		JLabel lblSelection = new JLabel("Wybór Kanału");
+		lblSelection.setToolTipText("Wybór Kanału");
+		lblSelection.setFont(new Font("Tahoma", Font.BOLD, 12));
+		lblSelection.setBounds(315, 25, 129, 31);
+		frameNiducArq.getContentPane().add(lblSelection);
 
-		Container cp = getContentPane();
-		cp.add(panel);
+		JLabel labelChanel = new JLabel("Jakość kanału");
+		labelChanel.setToolTipText("Jakość kanału");
+		labelChanel.setFont(new Font("Tahoma", Font.BOLD, 12));
+		labelChanel.setBounds(478, 25, 129, 31);
+		frameNiducArq.getContentPane().add(labelChanel);
 
-		this.setSize(1000, 700); // Domyslnie ustawiam rozmiar głownego okna
-		this.setTitle("NIDUC 2"); // nazwa tytuowa programu
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // domyslne
+		JLabel labelHowManyErrors = new JLabel("Ilość dopuszczalnych błędów");
+		labelHowManyErrors.setToolTipText("Ilość dopuszczalnych błędów");
+		labelHowManyErrors.setFont(new Font("Tahoma", Font.BOLD, 12));
+		labelHowManyErrors.setBounds(644, 25, 183, 31);
+		frameNiducArq.getContentPane().add(labelHowManyErrors);
 
-		progressBar = new JProgressBar(0, 100);
+		JLabel lblSource = new JLabel("");
+		lblSource.setBackground(Color.LIGHT_GRAY);
+		lblSource.setBounds(25, 194, 259, 257);
+		Image imgSource = new ImageIcon(this.getClass().getResource("/source.jpg")).getImage();
+		lblSource.setIcon(new ImageIcon(imgSource));
+		frameNiducArq.getContentPane().add(lblSource);
 
-		this.channel.addActionListener(this);
-		panel.add(channel);
-		this.channel.addItem("Dobry");
-		this.channel.addItem("Średni");
-		this.channel.addItem("Zły");
+		JLabel lblWithoutARQ = new JLabel("");
+		lblWithoutARQ.setBackground(Color.LIGHT_GRAY);
+		lblWithoutARQ.setBounds(294, 194, 259, 257);
+		Image imgOutput = new ImageIcon(this.getClass().getResource("/output.jpg")).getImage();
+		lblWithoutARQ.setIcon(new ImageIcon(imgOutput));
+		frameNiducArq.getContentPane().add(lblWithoutARQ);
 
-		this.frame.addActionListener(this);
-		panel.add(frame);
-		this.frame.addItem(8);
-		this.frame.addItem(32);
-		this.frame.addItem(64);
+		JLabel lblWithARQ = new JLabel("");
+		lblWithARQ.setBackground(Color.LIGHT_GRAY);
+		lblWithARQ.setBounds(563, 194, 259, 257);
+		Image imgOutputARQ = new ImageIcon(this.getClass().getResource("/outputARQ.jpg")).getImage();
+		lblWithoutARQ.setIcon(new ImageIcon(imgOutputARQ));
+		frameNiducArq.getContentPane().add(lblWithARQ);
 
-		this.howmanyerrors.addActionListener(this);
-		panel.add(howmanyerrors);
-		this.howmanyerrors.addItem(5);
-		this.howmanyerrors.addItem(20);
-		this.howmanyerrors.addItem(100);
+		textField = new JTextField();
+		textField.setBounds(843, 299, 210, 77);
+		frameNiducArq.getContentPane().add(textField);
+		textField.setColumns(20);
 
-		this.selection.addActionListener(this);
-		panel.add(selection);
+		JComboBox<Integer> comboBoxFrame = new JComboBox<Integer>();
+		comboBoxFrame.setBounds(875, 62, 129, 31);
+		frameNiducArq.getContentPane().add(comboBoxFrame);
 
-		this.selection.addItem("Parity");
-		this.selection.addItem("Modulo");
-		this.selection.addItem("Muliply");
+		JLabel labelFrame = new JLabel("Ramka");
+		labelFrame.setToolTipText("Ramka");
+		labelFrame.setFont(new Font("Tahoma", Font.BOLD, 12));
+		labelFrame.setBounds(875, 25, 129, 31);
+		frameNiducArq.getContentPane().add(labelFrame);
 
-		// this.selection.addItem(100);
-		menuBar = new JMenuBar();
-		// Build the first menu.
+		comboBoxChannel.addItem("Dobry");
+		comboBoxChannel.addItem("Średni");
+		comboBoxChannel.addItem("Zły");
+		comboBoxSelection.addItem("Parity");
+		comboBoxSelection.addItem("Modulo");
+		comboBoxSelection.addItem("Muliply");
+		comboBoxHowManyErrors.addItem(0);
+		comboBoxHowManyErrors.addItem(5);
+		comboBoxHowManyErrors.addItem(20);
+		comboBoxHowManyErrors.addItem(100);
+		comboBoxFrame.addItem(8);
+		comboBoxFrame.addItem(32);
+		comboBoxFrame.addItem(64);
+		JMenuBar menuBar = new JMenuBar();
+		frameNiducArq.setJMenuBar(menuBar);
 
-		help = new JMenu("Pomoc");
-		help.getAccessibleContext().setAccessibleDescription("Pomoc");
-		help.add(new JLabel());
-		menuBar.add(help);
+		JMenu mnAuthors = new JMenu("Autorzy");
+		menuBar.add(mnAuthors);
 
-		// Build _authors_menu to menu bar
-
-		_authors = new JMenu("Autorzy");
-		_authors.getAccessibleContext().setAccessibleDescription("Autorzy");
-		_authors.add(new JLabel());
-		menuBar.add(_authors);
-
-		_ARQ_Algorithms = new JMenu("Algorytmy ARQ");
-		_ARQ_Algorithms.getAccessibleContext().setAccessibleDescription("Algorytmy ARQ");
-		_ARQ_Algorithms.add(new JLabel());
-		menuBar.add(_ARQ_Algorithms);
-
-		// a group of JMenuItems
-
-		//
-		helpItem = new JMenuItem("");
-		helpItem.setText(" Opis programu: ");
-		helpItem.isBackgroundSet();
-		helpItem.setBackground(Color.cyan);
-		helpItem.getAccessibleContext().setAccessibleDescription(null);
-		helpItem.addActionListener(this); // this jest naszym słuchaczem
-		help.add(helpItem);
+		JMenuItem[] items = { new JMenuItem("Anna Trębicka"), new JMenuItem("Michał Moskała"),
+				new JMenuItem("Paweł Szynal") };
 
 		for (int i = 0; i < items.length; i++) {
 			items[i].isBackgroundSet();
 			items[i].setBackground(Color.LIGHT_GRAY);
 			items[i].getAccessibleContext().setAccessibleDescription(null);
 		}
-
-		for (int i = 0; i < items.length; i++)
-			items[i].addActionListener(this);
-
 		// dodanie opcji do menu "Figury"
-		_authors.add(items[0]);
-		_authors.add(items[1]);
-		_authors.add(items[2]);
+		mnAuthors.add(items[0]);
+		mnAuthors.add(items[1]);
+		mnAuthors.add(items[2]);
 
-		// dodanie opcji do menu "Zapisz"
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
 
-		_ARQ_ParityBits = new JMenuItem("");
-		_ARQ_ParityBits.setText("ARQ: Bit parzystości");
-		_ARQ_ParityBits.isBackgroundSet();
-		_ARQ_ParityBits.setBackground(Color.LIGHT_GRAY);
-		_ARQ_ParityBits.getAccessibleContext().setAccessibleDescription(null);
-		_ARQ_ParityBits.addActionListener(this);
-		_ARQ_Algorithms.add(_ARQ_ParityBits);
+		JMenu mnARQalgorithms = new JMenu("Algorytmy ARQ");
+		mnHelp.add(mnARQalgorithms);
 
-		_ARQ_MultiMethod = new JMenuItem("");
-		_ARQ_MultiMethod.setText("ARQ: Metoda mnożnia");
-		_ARQ_MultiMethod.isBackgroundSet();
-		_ARQ_MultiMethod.setBackground(Color.LIGHT_GRAY);
-		_ARQ_MultiMethod.getAccessibleContext().setAccessibleDescription(null);
-		_ARQ_MultiMethod.addActionListener(this);
-		_ARQ_Algorithms.add(_ARQ_MultiMethod);
+		JMenuItem[] items_mnARQalgorithms = { new JMenuItem("ARQ: Bit parzystości"),
+				new JMenuItem("ARQ: Metoda mnożnia"), new JMenuItem("ARQ: Autorki algorym") };
 
-		_ARQ_OwnAlgorithm = new JMenuItem("");
-		_ARQ_OwnAlgorithm.setText("ARQ: Autorki algorym");
-		_ARQ_OwnAlgorithm.isBackgroundSet();
-		_ARQ_OwnAlgorithm.setBackground(Color.LIGHT_GRAY);
-		_ARQ_OwnAlgorithm.getAccessibleContext().setAccessibleDescription(null);
-		_ARQ_OwnAlgorithm.addActionListener(this);
-		_ARQ_Algorithms.add(_ARQ_OwnAlgorithm);
+		for (int i = 0; i < items_mnARQalgorithms.length; i++) {
+			mnARQalgorithms.add(items_mnARQalgorithms[i]);
+			items_mnARQalgorithms[i].isBackgroundSet();
+			items_mnARQalgorithms[i].setBackground(Color.LIGHT_GRAY);
+			items_mnARQalgorithms[i].getAccessibleContext().setAccessibleDescription(null);
+		}
 
-		setJMenuBar(menuBar);
+		items[0].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent sourceItems0) {
+				JOptionPane.showMessageDialog(null, "Nr. Albumu:      \n Adres Email: ");
+			}
+		});
+		items[1].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent sourceItems0) {
+				JOptionPane.showMessageDialog(null, "Nr. Albumu:      \n Adres Email: ");
+			}
+		});
+		items[2].addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent sourceItems0) {
+				JOptionPane.showMessageDialog(null, "Nr. Albumu: 226026\n Adres Email: 226026@student.pwr.edu.pl ");
+			}
+		});
 
-		// ______________________________________________
+		JButton btnSTART = new JButton("START");
+		btnSTART.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
 
-		ImageIcon image = new ImageIcon("ARQ.jpg");
-		label = new JLabel("", image, JLabel.CENTER);
-		panel.add(label, BorderLayout.CENTER);
+				Object source = evt.getSource();
+				String mode = (String) comboBoxSelection.getSelectedItem();
 
-		panel.add(button);
-		button.addActionListener(this);
-		ImageIcon image1 = new ImageIcon("source.jpg");
-		label1 = new JLabel("", image1, JLabel.CENTER);
+				if (source == btnSTART && mode == "Parity") {
+					try {
+						
+						String combo = (String) comboBoxChannel.getSelectedItem();
+						double dcombo = 0;
+						if (combo=="Dobry") dcombo=1.6;
+						else if (combo=="Średni") dcombo=1.3;
+						else if (combo=="Zły") dcombo=1.0;
+						else System.exit(0);
+						
+						final double jakosc_kanalu = dcombo; // im mniej tym gorszy
+															// kanał
+															// -
+															// od
+															// 1.2 do 2; poniżej
+															// 1.4
+															// może
+															// być boguś+
+						/*
+						 * IDEALNY 1.6 SREDNI 1.54 Zly 1.49
+						 * 
+						 */
+						final int ramka = (int) comboBoxFrame.getSelectedItem();
+						// final int errorallowance = 5;// 20,10,5
+						final int errorallowance = (int) comboBoxHowManyErrors.getSelectedItem();
+						int warunek, i, q = 0;
+						double b1, b2;
+						char c = 0;
+						byte[] imageInByte = null;
+						String imageInString = " ";
+						String imageFromString = " ";
+						String imageFromStringbeta = new String();
+						String parity = new String();
+						String paritybeta = new String();
+						String parity2 = new String();
+						String parityerror = "";
+						String temperr = new String();
+						String imageFromString2 = new String();
+						int errors = 0;
+						int partem = 0;
 
-		ImageIcon image2 = new ImageIcon("output.jpg");
-		label2 = new JLabel("", image2, JLabel.CENTER);
+						BufferedImage originalImage = ImageIO.read(new File("img/source.jpg"));
+						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+						// convert BufferedImage to byte array
 
-		ImageIcon image3 = new ImageIcon("outputARQ.jpg");
-		label3 = new JLabel("", image3, JLabel.CENTER);
+						imageInByte = convertBImageTOByteArray(originalImage, byteArrayOutputStream, imageInByte);
 
-		setVisible(true);
+						byte[] imageFromByte = new byte[imageInByte.length];
+						byte[] imageFromByte2 = new byte[imageInByte.length];
 
-	}
+						// imageInString=" 11110000111100001111000011110000";
+						imageInString = conversionVariableToPolarizationSystem(imageInByte, imageInString);
 
-	public static void main(String[] args) {
+						warunek = imageInString.length() / ramka;
 
-		new ImageTest();
+						if (((imageInString.length() % ramka) - 1) != 0)
+							warunek++;
+
+						parity = prepareParityStringToTransmission(warunek, imageInString, ramka);
+
+						i = warunek;// NIE RUSZAĆ
+						parity = transmissionOfParity(parity, c); // c jest
+																	// znakiem
+
+						imageFromString = preparingChannelToSending(imageInString, c, jakosc_kanalu, imageFromString);
+						imageFromString2 = imageFromString.substring(0);
+
+						warunek = imageFromString.length() / ramka;
+
+						// sprawdzanie niepodzielności i tworzenie podziału na
+						// ramki
+						if (((imageFromString.length() - 1) % ramka) != 0)
+							warunek++;
+
+						// wyliczanie, Porównanie parity i wysylanie poprawek
+
+						do {
+
+							System.out.println(errors);
+
+							parity2 = "";
+							parity2 = createChanelParity(parity2, warunek, partem, imageFromString, ramka, c, q);
+
+							errors = 0;
+							parityerror = "";
+
+							// pariry error
+
+							parityerror = initParityError(parity, parity2);
+							errors = calcerrors(parity, parity2);
+
+							for (int n = 0; n < parityerror.length(); n++) {
+								temperr = "";
+								c = parityerror.charAt(n);
+								q = Character.getNumericValue(c);
+								if (q == 1)// jezelibylblad
+								{
+
+									temperr = getTemperr(ramka, imageInString, jakosc_kanalu, n); // nowo
+																									// pobrane
+																									// ramki
+
+									partem = getparity(temperr);
+
+									c = parity.charAt(n);
+									q = Character.getNumericValue(c);
+
+									if (partem == q) {
+
+										imageFromStringbeta = createSecondaryString(imageFromString, n, temperr, ramka);
+
+										imageFromString = imageFromStringbeta.substring(0,
+												imageFromStringbeta.length());
+
+										paritybeta = parity2.substring(0, n);
+
+										if (c == 1)
+											paritybeta = paritybeta.concat("1");
+										else
+											paritybeta = paritybeta.concat("0");
+
+										paritybeta = paritybeta.concat(parity2.substring(n + 1, parity2.length()));
+										parity2 = paritybeta.substring(0, paritybeta.length());
+
+									}
+
+								}
+							}
+
+						} while (errors > errorallowance);
+
+						// DEKODER
+						warunek = imageInString.length() / 8;
+
+						imageFromByte = createImageFromByte(warunek, imageFromString, imageFromByte);
+						imageFromByte2 = createImageFromByte2(i, imageFromByte2, imageFromString2);
+
+						b1 = calculateBitErrorRate(imageInString, imageFromString);
+
+						b2 = calculateBitErrorRate(imageInString, imageFromString2);
+
+						try (PrintWriter out = new PrintWriter("FROMSTR.txt")) {
+							out.println(imageFromString);
+						}
+						byteArrayOutputStream.close();
+
+						try (PrintWriter out = new PrintWriter("INSTR.txt")) {
+							out.println(imageInString);
+						}
+						byteArrayOutputStream.close();
+
+						System.out.println("ARQ" + b1 + "% \nBEZ ARQ" + b2 + "%");
+						textField.setText("BEZ ARQ  " + b2 + "%");
+						textFieldARQ.setText("ARQ  " + b1 + "% \n");
+						InputStream in = new ByteArrayInputStream(imageFromByte2);
+						BufferedImage bImageFromConvert = ImageIO.read(in);
+						try {
+							ImageIO.write(bImageFromConvert, "jpg", new File("img/output.jpg"));
+							// lblWithoutARQ.setIcon(arg0);
+							Image imgOutput = bImageFromConvert;
+							lblWithoutARQ.setIcon(new ImageIcon(imgOutput));
+
+						} catch (IllegalArgumentException e) {
+							System.err.println("Popraw kanał");
+						}
+						in = new ByteArrayInputStream(imageFromByte);
+						bImageFromConvert = ImageIO.read(in);
+						ImageIO.write(bImageFromConvert, "jpg", new File("img/outputARQ.jpg"));
+						Image imgOutputARQ = bImageFromConvert;
+						lblWithARQ.setIcon(new ImageIcon(imgOutputARQ));
+
+						System.out.println("Gotowe");
+
+					} catch (IOException e) {
+						System.out.println(e.getMessage());
+						System.out.println("XD");
+					}
+				}
+
+				if (source == btnSTART && mode == "Modulo") {
+					try {
+						
+						String combo = (String) comboBoxChannel.getSelectedItem();
+						double dcombo = 0;
+						if (combo=="Dobry") dcombo=1.6;
+						else if (combo=="Średni") dcombo=1.3;
+						else if (combo=="Zły") dcombo=0.5;
+						else System.exit(0);
+						
+						final double jakosc_kanalu = dcombo; // im mniej tym
+															// gorszy kanał
+															// -
+															// od
+															// 1.2 do 2; poniżej
+															// 1.4
+															// może
+															// być boguś+
+						/*
+						 * IDEALNY 1.6 SREDNI 1.54 Zly 1.49
+						 * 
+						 */
+						final int ramka = (int) comboBoxFrame.getSelectedItem();
+						final int errorallowance = (int) comboBoxHowManyErrors.getSelectedItem();
+
+						int warunek, i, q = 0;
+						double b1, b2;
+						char c = 0;
+						byte[] imageInByte = null;
+						String imageInString = " ";
+						String imageFromString = " ";
+						String imageFromStringbeta = new String();
+						String parity = new String();
+						String paritybeta = new String();
+						String parity2 = new String();
+						String parityerror = "";
+						String temperr = new String();
+						String imageFromString2 = new String();
+						int errors = 0;
+						int partem = 0;
+
+						BufferedImage originalImage = ImageIO.read(new File("img/source.jpg"));
+						ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+						// convert BufferedImage to byte array
+
+						imageInByte = convertBImageTOByteArray(originalImage, byteArrayOutputStream, imageInByte);
+
+						byte[] imageFromByte = new byte[imageInByte.length];
+						byte[] imageFromByte2 = new byte[imageInByte.length];
+
+						imageInString = conversionVariableToPolarizationSystem(imageInByte, imageInString);
+						//imageInString=" 11110000111100001111000011111010";
+
+						warunek = imageInString.length() / ramka;
+
+						if (((imageInString.length() % ramka) - 1) != 0)
+							warunek++;
+
+						parity = prepareParityStringToTransmission_Modulo(warunek, imageInString, ramka);
+
+						i = warunek;// NIE RUSZAĆ
+						parity = transmissionOfParity_Modulo(parity, c); // c
+																			// jest
+																			// znakiem
+
+						imageFromString = preparingChannelToSending(imageInString, c, jakosc_kanalu, imageFromString);
+						imageFromString2 = imageFromString.substring(0);
+
+						warunek = imageFromString.length() / ramka;
+
+						// sprawdzanie niepodzielności i tworzenie podziału na
+						// ramki
+						if (((imageFromString.length() - 1) % ramka) != 0)
+							warunek++;
+
+						// wyliczanie, Porównanie parity i wysylanie poprawek
+
+						do {
+
+							System.out.println(errors);
+
+							parity2 = "";
+							parity2 = createChanelParity_Modulo(parity2, warunek, partem, imageFromString, ramka, c, q);
+
+							errors = 0;
+							parityerror = "";
+
+							// pariry error
+
+							parityerror = initParityError(parity, parity2);
+							errors = calcerrors(parity, parity2);
+
+							for (int n = 0; n < parityerror.length(); n++) {
+								temperr = "";
+								c = parityerror.charAt(n);
+								q = Character.getNumericValue(c);
+								if (q == 1)// jezelibylblad
+								{
+
+									temperr = getTemperr(ramka, imageInString, jakosc_kanalu, n); // nowo
+																									// pobrane
+																									// ramki
+
+									partem = modulus(temperr);
+
+									c = parity.charAt(n);
+									q = Character.getNumericValue(c);
+
+									if (partem == q) {
+
+										imageFromStringbeta = createSecondaryString(imageFromString, n, temperr, ramka);
+
+										imageFromString = imageFromStringbeta.substring(0,
+												imageFromStringbeta.length());
+
+										paritybeta = parity2.substring(0, n);
+
+										if (c == 1)
+											paritybeta = paritybeta.concat("1");
+										else
+											paritybeta = paritybeta.concat("0");
+
+										paritybeta = paritybeta.concat(parity2.substring(n + 1, parity2.length()));
+										parity2 = paritybeta.substring(0, paritybeta.length());
+
+									}
+
+								}
+							}
+
+						} while (errors > errorallowance);
+
+						// DEKODER
+						warunek = imageInString.length() / 8;
+
+						imageFromByte = createImageFromByte(warunek, imageFromString, imageFromByte);
+						imageFromByte2 = createImageFromByte2(i, imageFromByte2, imageFromString2);
+
+						b1 = calculateBitErrorRate(imageInString, imageFromString);
+
+						b2 = calculateBitErrorRate(imageInString, imageFromString2);
+
+						try (PrintWriter out = new PrintWriter("FROMSTR.txt")) {
+							out.println(imageFromString);
+						}
+						byteArrayOutputStream.close();
+
+						try (PrintWriter out = new PrintWriter("INSTR.txt")) {
+							out.println(imageInString);
+						}
+						byteArrayOutputStream.close();
+
+						System.out.println("ARQ" + b1 + "% \nBEZ ARQ" + b2 + "%");
+						textField.setText("BEZ ARQ  " + b2 + "%");
+						textFieldARQ.setText("ARQ  " + b1 + "% \n");
+
+						InputStream in = new ByteArrayInputStream(imageFromByte2);
+						BufferedImage bImageFromConvert = ImageIO.read(in);
+						try {
+							ImageIO.write(bImageFromConvert, "jpg", new File("img/output.jpg"));
+						} catch (IllegalArgumentException e) {
+							System.err.println("Popraw kanał");
+						}
+						in = new ByteArrayInputStream(imageFromByte);
+						bImageFromConvert = ImageIO.read(in);
+						ImageIO.write(bImageFromConvert, "jpg", new File("img/outputARQ.jpg"));
+
+						/*
+						 * this.panel.add(label1, BorderLayout.CENTER);
+						 * panel.add(label2, BorderLayout.CENTER);
+						 * panel.add(label3, BorderLayout.CENTER);
+						 * panel.revalidate(); panel.repaint();
+						 * 
+						 */
+						System.out.println("Gotowe");
+
+					} catch (IOException e) {
+						System.out.println(e.getMessage());
+						System.out.println("XD");
+					}
+				}
+
+			}
+		});
+		btnSTART.setFont(new Font("Tahoma", Font.BOLD, 15));
+		btnSTART.setBackground(new Color(51, 255, 255));
+		btnSTART.setBounds(843, 194, 210, 94);
+		frameNiducArq.getContentPane().add(btnSTART);
+
+		JLabel labelImage = new JLabel("Source image");
+		labelImage.setFont(new Font("Tahoma", Font.BOLD, 16));
+		labelImage.setBounds(88, 152, 129, 31);
+		frameNiducArq.getContentPane().add(labelImage);
+
+		JLabel lblImgOutput = new JLabel("Zdj\u0119cie bez transmisji ARQ");
+		lblImgOutput.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblImgOutput.setBounds(305, 152, 240, 31);
+		frameNiducArq.getContentPane().add(lblImgOutput);
+
+		JLabel lblImgOutputARQ = new JLabel("Zdj\u0119cie z transmisj\u0105 ARQ");
+		lblImgOutputARQ.setFont(new Font("Tahoma", Font.BOLD, 16));
+		lblImgOutputARQ.setBounds(578, 152, 240, 31);
+		frameNiducArq.getContentPane().add(lblImgOutputARQ);
+
+		JProgressBar progressBar = new JProgressBar();
+		progressBar.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				
+			}
+		});
+		progressBar.setBounds(25, 497, 1028, 38);
+		frameNiducArq.getContentPane().add(progressBar);
+
+		textFieldARQ = new JTextField();
+		textFieldARQ.setColumns(10);
+		textFieldARQ.setBounds(843, 374, 210, 77);
+		frameNiducArq.getContentPane().add(textFieldARQ);
+
 	}
 
 	static byte[] convertBImageTOByteArray(BufferedImage originalImage, ByteArrayOutputStream byteArrayOutputStream,
@@ -203,7 +622,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return imageInByte;
 	}
 
@@ -221,7 +639,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 				temp = "0" + temp;
 			imageInString = imageInString.concat(temp);
 		}
-
 		return imageInString;
 	}
 
@@ -321,9 +738,8 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 				temp2 = imageFromString.substring((ramka * i) + 1, imageFromString.length());
 				partem = modulus(temp2);
 			}
-		
 
-		parity2 = parity2.concat(Integer.toHexString(partem));
+			parity2 = parity2.concat(Integer.toHexString(partem));
 		}
 		return parity2;
 	}
@@ -335,22 +751,17 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 		// TWORZENIE popsutego stringa ... KANAŁ
 		for (int n = 1; n < imageInString.length(); n++) {
 			System.out.println(n + "/" + imageInString.length());
-
 			c = imageInString.charAt(n);
 			val = Character.getNumericValue(c);
 			val = val * 5;
-
 			Random random = new Random();
-
 			d = random.nextGaussian();
 			d = d / jakosc_kanalu;
 			val = val + d;
-
 			if (val > 2.5)
 				c = '1';
 			if (val <= 2.5)
 				c = '0';
-
 			s = Character.toString(c);
 			imageFromString = imageFromString.concat(s);
 
@@ -361,7 +772,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 	static short modulus(String s) {
 
 		int a = Integer.parseInt(s, 2);
-
 		a = a % 16;
 		short b = (short) a;
 		return b;
@@ -377,7 +787,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 		double fract = d - l;
 		d = fract * 16;
 		short b = (short) d;
-
 		return b;
 	}
 
@@ -396,14 +805,12 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 	}
 
 	static String initParityError(String parity, String parity2) {
-
 		// int errors=0;
 		String parityerror = "";
 		char c, c2;
 		for (int n = 0; n < parity.length(); n++) {
 			c = parity.charAt(n);
 			c2 = parity2.charAt(n);
-
 			if (c == c2)
 				parityerror = parityerror.concat("0");
 			else {
@@ -413,20 +820,16 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 
 		}
 		return parityerror;
-
 	}
 
 	static int calcerrors(String parity, String parity2) {
-
 		int errors = 0;
 		char c, c2;
 		for (int n = 0; n < parity.length(); n++) {
 			c = parity.charAt(n);
 			c2 = parity2.charAt(n);
-
 			if (c != c2)
 				errors++;
-
 		}
 		return errors;
 
@@ -440,17 +843,14 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 			c = imageInString.charAt(ramka * n + e + 1);// ?
 			val = Character.getNumericValue(c);
 			val = val * 5;
-
 			Random random = new Random();
 			d = random.nextGaussian();
 			d = d / jakosc_kanalu;
 			val = val + d;
-
 			if (val > 2.5)
 				c = '1';
 			if (val <= 2.5)
 				c = '0';
-
 			s = Character.toString(c);
 			temperr = temperr.concat(s);
 		}
@@ -484,7 +884,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 				temp = imageInString.substring((ramka * i) + 1, imageInString.length());
 				partem = getparity(temp);
 			}
-
 			parity = parity.concat(Integer.toString(partem));
 
 		}
@@ -507,7 +906,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 				temp = imageInString.substring((ramka * i) + 1, imageInString.length());
 				partem = modulus(temp);
 			}
-
 			parity = parity.concat(Integer.toHexString(partem));
 
 		}
@@ -531,11 +929,8 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 			} catch (NumberFormatException e) {
 				System.err.println(temp.length());
 			}
-
 			binary = binary - 128;
-
 			imageFromByte[n] = (byte) binary;
-
 		}
 		return imageFromByte;
 	}
@@ -550,7 +945,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 			binary = Integer.parseInt(temp, 2);
 			binary = binary - 128;
 			imageFromByte2[n] = (byte) binary;
-
 		}
 		return imageFromByte2;
 	}
@@ -560,6 +954,7 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 		char c, c2;
 		for (int n = 0; n < imageInString.length(); n++) {
 			System.out.println(n + "/" + (imageInString.length() - 1));
+
 			c = imageInString.charAt(n);
 			c2 = imageFromString.charAt(n);
 
@@ -569,343 +964,6 @@ public class ImageTest extends JFrame implements Serializable, ActionListener {
 		double b1 = ber;
 		b1 = b1 / imageInString.length();
 		b1 = b1 * 100;
-
 		return b1;
-
-	}
-
-	public void actionPerformed(ActionEvent evt) {
-		Object source = evt.getSource();
-		String mode = (String) this.selection.getSelectedItem();
-		if (source == button && mode == "Parity") {
-			try {
-				final double jakosc_kanalu = 1.47; // im mniej tym gorszy kanał
-													// -
-													// od
-													// 1.2 do 2; poniżej 1.4
-													// może
-													// być boguś+
-				/*
-				 * IDEALNY 1.6 SREDNI 1.54 Zly 1.49
-				 * 
-				 */
-				final int ramka = 8;
-				final int errorallowance = 5;// 20,10,5
-
-				int warunek, i, q = 0;
-				double b1, b2;
-				char c = 0;
-				byte[] imageInByte = null;
-				String imageInString = " ";
-				String imageFromString = " ";
-				String imageFromStringbeta = new String();
-				String parity = new String();
-				String paritybeta = new String();
-				String parity2 = new String();
-				String parityerror = "";
-				String temperr = new String();
-				String imageFromString2 = new String();
-				int errors = 0;
-				int partem = 0;
-
-				BufferedImage originalImage = ImageIO.read(new File("source.jpg"));
-				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				// convert BufferedImage to byte array
-
-				imageInByte = convertBImageTOByteArray(originalImage, byteArrayOutputStream, imageInByte);
-
-				byte[] imageFromByte = new byte[imageInByte.length];
-				byte[] imageFromByte2 = new byte[imageInByte.length];
-
-				// imageInString=" 11110000111100001111000011110000";
-				imageInString = conversionVariableToPolarizationSystem(imageInByte, imageInString);
-
-				warunek = imageInString.length() / ramka;
-
-				if (((imageInString.length() % ramka) - 1) != 0)
-					warunek++;
-
-				parity = prepareParityStringToTransmission(warunek, imageInString, ramka);
-
-				i = warunek;// NIE RUSZAĆ
-				parity = transmissionOfParity(parity, c); // c jest znakiem
-
-				imageFromString = preparingChannelToSending(imageInString, c, jakosc_kanalu, imageFromString);
-				imageFromString2 = imageFromString.substring(0);
-
-				warunek = imageFromString.length() / ramka;
-
-				// sprawdzanie niepodzielności i tworzenie podziału na ramki
-				if (((imageFromString.length() - 1) % ramka) != 0)
-					warunek++;
-
-				// wyliczanie, Porównanie parity i wysylanie poprawek
-
-				do {
-
-					System.out.println(errors);
-
-					parity2 = "";
-					parity2 = createChanelParity(parity2, warunek, partem, imageFromString, ramka, c, q);
-
-					errors = 0;
-					parityerror = "";
-
-					// pariry error
-
-					parityerror = initParityError(parity, parity2);
-					errors = calcerrors(parity, parity2);
-
-					for (int n = 0; n < parityerror.length(); n++) {
-						temperr = "";
-						c = parityerror.charAt(n);
-						q = Character.getNumericValue(c);
-						if (q == 1)// jezelibylblad
-						{
-
-							temperr = getTemperr(ramka, imageInString, jakosc_kanalu, n); // nowo
-																							// pobrane
-																							// ramki
-
-							partem = getparity(temperr);
-
-							c = parity.charAt(n);
-							q = Character.getNumericValue(c);
-
-							if (partem == q) {
-
-								imageFromStringbeta = createSecondaryString(imageFromString, n, temperr, ramka);
-
-								imageFromString = imageFromStringbeta.substring(0, imageFromStringbeta.length());
-
-								paritybeta = parity2.substring(0, n);
-
-								if (c == 1)
-									paritybeta = paritybeta.concat("1");
-								else
-									paritybeta = paritybeta.concat("0");
-
-								paritybeta = paritybeta.concat(parity2.substring(n + 1, parity2.length()));
-								parity2 = paritybeta.substring(0, paritybeta.length());
-
-							}
-
-						}
-					}
-
-				} while (errors > errorallowance);
-
-				// DEKODER
-				warunek = imageInString.length() / 8;
-
-				imageFromByte = createImageFromByte(warunek, imageFromString, imageFromByte);
-				imageFromByte2 = createImageFromByte2(i, imageFromByte2, imageFromString2);
-
-				b1 = calculateBitErrorRate(imageInString, imageFromString);
-
-				b2 = calculateBitErrorRate(imageInString, imageFromString2);
-
-				try (PrintWriter out = new PrintWriter("FROMSTR.txt")) {
-					out.println(imageFromString);
-				}
-				byteArrayOutputStream.close();
-
-				try (PrintWriter out = new PrintWriter("INSTR.txt")) {
-					out.println(imageInString);
-				}
-				byteArrayOutputStream.close();
-
-				System.out.println("ARQ" + b1 + "% \nBEZ ARQ" + b2 + "%");
-
-				InputStream in = new ByteArrayInputStream(imageFromByte2);
-				BufferedImage bImageFromConvert = ImageIO.read(in);
-				try {
-					ImageIO.write(bImageFromConvert, "jpg", new File("output.jpg"));
-				} catch (IllegalArgumentException e) {
-					System.err.println("Popraw kanał");
-				}
-				in = new ByteArrayInputStream(imageFromByte);
-				bImageFromConvert = ImageIO.read(in);
-				ImageIO.write(bImageFromConvert, "jpg", new File("outputARQ.jpg"));
-
-				this.panel.add(label1, BorderLayout.CENTER);
-				panel.add(label2, BorderLayout.CENTER);
-				panel.add(label3, BorderLayout.CENTER);
-				panel.revalidate();
-				panel.repaint();
-
-				System.out.println("Gotowe");
-
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				System.out.println("XD");
-			}
-		}
-
-		if (source == button && mode == "Modulo") {
-			try {
-				final double jakosc_kanalu = 1.45; // im mniej tym gorszy kanał
-													// -
-													// od
-													// 1.2 do 2; poniżej 1.4
-													// może
-													// być boguś+
-				/*
-				 * IDEALNY 1.6 SREDNI 1.54 Zly 1.49
-				 * 
-				 */
-				final int ramka = 8;
-				final int errorallowance = 5;// 20,10,5
-
-				int warunek, i, q = 0;
-				double b1, b2;
-				char c = 0;
-				byte[] imageInByte = null;
-				String imageInString = " ";
-				String imageFromString = " ";
-				String imageFromStringbeta = new String();
-				String parity = new String();
-				String paritybeta = new String();
-				String parity2 = new String();
-				String parityerror = "";
-				String temperr = new String();
-				String imageFromString2 = new String();
-				int errors = 0;
-				int partem = 0;
-
-				BufferedImage originalImage = ImageIO.read(new File("source.jpg"));
-				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				// convert BufferedImage to byte array
-
-				imageInByte = convertBImageTOByteArray(originalImage, byteArrayOutputStream, imageInByte);
-
-				byte[] imageFromByte = new byte[imageInByte.length];
-				byte[] imageFromByte2 = new byte[imageInByte.length];
-
-				imageInString = conversionVariableToPolarizationSystem(imageInByte, imageInString);
-				//imageInString=" 11110000111100001111000011111010";
-
-				warunek = imageInString.length() / ramka;
-
-				if (((imageInString.length() % ramka) - 1) != 0)
-					warunek++;
-
-				parity = prepareParityStringToTransmission_Modulo(warunek, imageInString, ramka);
-
-				i = warunek;// NIE RUSZAĆ
-				parity = transmissionOfParity_Modulo(parity, c); // c jest
-																	// znakiem
-
-				imageFromString = preparingChannelToSending(imageInString, c, jakosc_kanalu, imageFromString);
-				imageFromString2 = imageFromString.substring(0);
-
-				warunek = imageFromString.length() / ramka;
-
-				// sprawdzanie niepodzielności i tworzenie podziału na ramki
-				if (((imageFromString.length() - 1) % ramka) != 0)
-					warunek++;
-
-				// wyliczanie, Porównanie parity i wysylanie poprawek
-
-				do {
-
-					System.out.println(errors);
-
-					parity2 = "";
-					parity2 = createChanelParity_Modulo(parity2, warunek, partem, imageFromString, ramka, c, q);
-
-					errors = 0;
-					parityerror = "";
-
-					// pariry error
-
-					parityerror = initParityError(parity, parity2);
-					errors = calcerrors(parity, parity2);
-
-					for (int n = 0; n < parityerror.length(); n++) {
-						temperr = "";
-						c = parityerror.charAt(n);
-						q = Character.getNumericValue(c);
-						if (q == 1)// jezelibylblad
-						{
-
-							temperr = getTemperr(ramka, imageInString, jakosc_kanalu, n); // nowo
-																							// pobrane
-																							// ramki
-
-							partem = getparity(temperr);
-
-							c = parity.charAt(n);
-							q = Character.getNumericValue(c);
-
-							if (partem == q) {
-
-								imageFromStringbeta = createSecondaryString(imageFromString, n, temperr, ramka);
-
-								imageFromString = imageFromStringbeta.substring(0, imageFromStringbeta.length());
-
-								paritybeta = parity2.substring(0, n);
-								
-								if (c == 1)
-									paritybeta = paritybeta.concat("1");
-								else
-									paritybeta = paritybeta.concat("0");
-
-								paritybeta = paritybeta.concat(parity2.substring(n + 1, parity2.length()));
-								parity2 = paritybeta.substring(0, paritybeta.length());
-
-							}
-
-						}
-					}
-
-				} while (errors > errorallowance);
-
-				// DEKODER
-				warunek = imageInString.length() / 8;
-
-				imageFromByte = createImageFromByte(warunek, imageFromString, imageFromByte);
-				imageFromByte2 = createImageFromByte2(i, imageFromByte2, imageFromString2);
-
-				b1 = calculateBitErrorRate(imageInString, imageFromString);
-
-				b2 = calculateBitErrorRate(imageInString, imageFromString2);
-
-				try (PrintWriter out = new PrintWriter("FROMSTR.txt")) {
-					out.println(imageFromString);
-				}
-				byteArrayOutputStream.close();
-
-				try (PrintWriter out = new PrintWriter("INSTR.txt")) {
-					out.println(imageInString);
-				}
-				byteArrayOutputStream.close();
-
-				System.out.println("ARQ" + b1 + "% \nBEZ ARQ" + b2 + "%");
-
-				InputStream in = new ByteArrayInputStream(imageFromByte2);
-				BufferedImage bImageFromConvert = ImageIO.read(in);
-				try {
-					ImageIO.write(bImageFromConvert, "jpg", new File("output.jpg"));
-				} catch (IllegalArgumentException e) {
-					System.err.println("Popraw kanał");
-				}
-				in = new ByteArrayInputStream(imageFromByte);
-				bImageFromConvert = ImageIO.read(in);
-				ImageIO.write(bImageFromConvert, "jpg", new File("outputARQ.jpg"));
-
-				this.panel.add(label1, BorderLayout.CENTER);
-				panel.add(label2, BorderLayout.CENTER);
-				panel.add(label3, BorderLayout.CENTER);
-				panel.revalidate();
-				panel.repaint();
-
-				System.out.println("Gotowe");
-
-			} catch (IOException e) {
-				System.out.println(e.getMessage());
-				System.out.println("XD");
-			}
-		}
 	}
 }
