@@ -152,8 +152,8 @@ public class arqFrame {
         comboBoxHowManyErrors.addItem(20);
         comboBoxHowManyErrors.addItem(100);
         comboBoxFrame.addItem(8);
+        comboBoxFrame.addItem(16);
         comboBoxFrame.addItem(32);
-        comboBoxFrame.addItem(64);
         JMenuBar menuBar = new JMenuBar();
         frameNiducArq.setJMenuBar(menuBar);
  
@@ -578,6 +578,7 @@ public class arqFrame {
 
                     try {
                        
+                    	int qwe;
                         String combo = (String) comboBoxChannel.getSelectedItem();
                         double dcombo = 0;
                         if (combo=="Dobry") dcombo=1.6;
@@ -973,7 +974,7 @@ public class arqFrame {
  
     static short modulus(String s) {
  
-        int a = Integer.parseInt(s, 2);
+        long a = Long.parseLong(s, 2);
         a = a % 16;
         short b = (short) a;
         return b;
@@ -981,7 +982,7 @@ public class arqFrame {
  
     static short multipli(String s) {
  
-        int a = Integer.parseInt(s, 2);
+        long a = Long.parseLong(s, 2);
  
         double d = Math.PI;
         d = d * a;
